@@ -18,6 +18,9 @@
 # misc
 .DS_Store
 *.pem
+nul
+output.txt
+validate_error.txt
 
 # debug
 npm-debug.log*
