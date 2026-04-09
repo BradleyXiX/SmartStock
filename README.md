@@ -100,7 +100,7 @@ Ensure PostgreSQL is running and create a database:
 createdb smartstock
 ```
 
-### 5. Set Up Prisma
+### 5. Set Up Prisma and NextAuth.js
 
 Initialize and run database migrations:
 
@@ -111,9 +111,35 @@ npx prisma migrate dev --name init
 This command will:
 - Create the database schema
 - Generate Prisma client
-- Seed the database (if seed script exists)
+- Set up NextAuth.js tables (User, Session, Account, VerificationToken)
 
-### 6. Run the Development Server
+### 6. Configure NextAuth.js
+
+Generate a secret key:
+
+```bash
+openssl rand -base64 32
+```
+
+Add to `.env.local`:
+```env
+NEXTAUTH_SECRET="<your-generated-secret>"
+NEXTAUTH_URL="http://localhost:3000"
+```
+
+Seed test users for authentication:
+
+```bash
+node scripts/seed-nextauth.js
+```
+
+Default test users:
+- Email: `admin@smartstock.local` - Password: `Admin@123456` (Admin)
+- Email: `manager@smartstock.local` - Password: `Manager@123456` (Manager)  
+- Email: `john@smartstock.local` - Password: `John@123456` (User)
+
+
+### 7. Run the Development Server
 
 Start both the Next.js frontend and Express backend:
 
@@ -125,23 +151,96 @@ The application will be available at `http://localhost:3000`
 
 The API server runs on `http://localhost:3001`
 
+**First time setup:** Visit http://localhost:3000/auth/register to create an account, or use seeded test users above.
+
+---
+
+## 🔐 Authentication (NextAuth.js)
+
+SmartStock uses **NextAuth.js 4.24.0** for secure user authentication with role-based access control.
+
+### Authentication Features
+
+- ✅ **Credentials-based Authentication** - Email and password sign-in
+- ✅ **Password Security** - Bcryptjs hashing with 10 salt rounds
+- ✅ **Session Management** - JWT-based sessions with database persistence
+- ✅ **Role-Based Access Control** - Three-tier permissions (user/manager/admin)
+- ✅ **Route Protection** - Automatic middleware protection for authenticated routes
+- ✅ **CSRF Protection** - Built-in security against cross-site attacks
+
+### Authentication Routes
+
+| Route | Purpose | Protection |
+|-------|---------|-----------|
+| `/auth/signin` | User sign-in form | None |
+| `/auth/register` | User registration | None |
+| `/dashboard` | User dashboard | Auth required |
+| `/admin` | Admin panel | Admin role required |
+
+### Authentication Documentation
+
+**Complete documentation for NextAuth.js:**
+
+1. **[NEXTAUTH_DOCUMENTATION_INDEX.md](NEXTAUTH_DOCUMENTATION_INDEX.md)** - Start here! Navigation guide to all docs
+2. **[NEXTAUTH_QUICK_CARD.md](NEXTAUTH_QUICK_CARD.md)** - One-page quick reference for common tasks
+3. **[NEXTAUTH_GUIDE.md](NEXTAUTH_GUIDE.md)** - Comprehensive authentication guide
+4. **[NEXTAUTH_IMPLEMENTATION_GUIDE.md](NEXTAUTH_IMPLEMENTATION_GUIDE.md)** - Step-by-step testing and validation
+5. **[NEXTAUTH_ARCHITECTURE.md](NEXTAUTH_ARCHITECTURE.md)** - System architecture and deployment
+
+### Quick Start - Authentication
+
+```bash
+# 1. Create test users
+node scripts/seed-nextauth.js
+
+# 2. Test complete authentication flow
+node scripts/test-nextauth.js flow
+
+# 3. Visit sign-in page
+# http://localhost:3000/auth/signin
+
+# 4. Use test credentials:
+# Email: admin@smartstock.local
+# Password: Admin@123456
+```
+
+---
+
 ## 📁 Project Structure
 
 ```
 SmartStock/
 ├── app/                          # Next.js app directory
+│   ├── auth/                    # Authentication pages (signin, register, error)
+│   ├── components/              # Reusable React components
+│   ├── dashboard/               # Protected dashboard pages
+│   ├── admin/                   # Admin-only pages
 │   ├── layout.tsx               # Root layout component
-│   ├── page.tsx                 # Dashboard, inventory, and POS pages
+│   ├── page.tsx                 # Home page
+│   ├── providers.tsx            # NextAuth SessionProvider
 │   └── globals.css              # Global styles
+├── lib/                          # Utility functions and configurations
+│   ├── auth-config.ts           # NextAuth configuration
+│   ├── auth-nextauth.ts         # Password hashing utilities
+│   ├── validation.ts            # Input validation utilities
+│   ├── security-middleware.ts   # API security middleware
+│   └── prisma.ts                # Prisma client
+├── pages/api/auth/              # NextAuth API routes
+│   ├── [...nextauth].ts         # NextAuth handler
+│   └── register.ts              # User registration endpoint
 ├── prisma/
 │   └── schema.prisma            # Database schema and models
-├── server.js                     # Express.js API server
-├── docker-compose.yml            # Docker Compose configuration
+├── scripts/                      # Utility scripts
+│   ├── seed-nextauth.js         # Database seeding with test users
+│   └── test-nextauth.js         # Authentication testing utility
+├── middleware.ts                # Next.js middleware for route protection
+├── server.js                    # Express.js API server
+├── docker-compose.yml           # Docker Compose configuration
 ├── tailwind.config.ts           # Tailwind CSS configuration
 ├── tsconfig.json                # TypeScript configuration
 ├── postcss.config.js            # PostCSS configuration
 ├── package.json                 # Project dependencies
-└── README.md                     # This file
+└── README.md                    # This file
 ```
 
 ## 📊 Database Schema
