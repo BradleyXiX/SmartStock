@@ -386,15 +386,26 @@ See [package.json](package.json) for a complete list of dependencies. Key packag
 - `recharts` - Charting library
 - `tailwindcss` - CSS framework
 
+## 📚 Documentation
+
+Complete documentation is available in our documentation index. Start here based on your role:
+
+- **[DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)** - Navigation guide for all documentation
+- **[DEVELOPMENT.md](DEVELOPMENT.md)** - Development setup and workflow
+- **[API.md](API.md)** - Complete API endpoint reference
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Production deployment guide
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture and design
+
+---
+
 ## 🤝 Contributing
 
-Contributions are welcome! To contribute:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+We welcome contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on:
+- Code standards and style
+- Development workflow
+- Pull request process
+- Testing requirements
 
 ## 📄 License
 
@@ -402,19 +413,23 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 📧 Support
 
-For support, questions, or feedback, please open an issue on the repository or contact the development team.
+- **Issues & Bugs:** [GitHub Issues](https://github.com/BradleyXiX/SmartStock/issues)
+- **Questions:** [GitHub Discussions](https://github.com/BradleyXiX/SmartStock/discussions)
+- **Security:** See [SECURITY_GUIDE.md](SECURITY_GUIDE.md)
 
 ## 🗺️ Roadmap
 
-- [ ] User authentication and authorization
-- [ ] Multi-level approval workflows
 - [ ] Advanced reporting and analytics
 - [ ] Inventory forecasting with ML
 - [ ] Mobile app support
 - [ ] Multi-warehouse support
 - [ ] Email and SMS notifications
 - [ ] Integration with payment gateways
+- [ ] Real-time inventory updates (WebSocket)
+- [ ] Barcode scanning support
 
 ---
 
 **Happy Stocking! 📦✨**
+
+*For complete documentation, see [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)*
